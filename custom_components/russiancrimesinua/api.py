@@ -19,20 +19,20 @@ class Communications(object):
 
     def __init__(self) -> None:
         self.API_URL = "https://www.russiancrimes.in.ua/stats.json"
-        self.API_TIMEOUT = 30
         self.response = None
 
     async def _async_request(self, method="get", data=None):
         try:
-            timeout = aiohttp.ClientTimeout(total=self.API_TIMEOUT)
+            timeout = aiohttp.ClientTimeout(total=30)
             async with aiohttp.ClientSession() as session:
                 async with session.get(self.API_URL, headers=HTTP_HEADERS, timeout=timeout) as response:
                     if response.status == 401:
                         _LOGGER.error("[ASYNC] Could not get info from %s: 401".format(self.API_URL))
                         return None
-                    _LOGGER.debug("[ASYNC] custom_components.russiancrimesinua: got response from upstream: {}".format(response.json()))
-                    session.close()
-                    return await response.json()
+                    self.response = await response.json()
+                    _LOGGER.debug("[ASYNC] custom_components.russiancrimesinua: got response from upstream: {}".format(self.response))
+                session.close()
+                return self.response
         except (asyncio.TimeoutError, aiohttp.ClientError) as error:
             _LOGGER.error("[ASYNC] Could not get info from {}: {}".format(self.API_URL, error))
 
@@ -43,6 +43,7 @@ class Communications(object):
             if response.status_code == 401:
                 _LOGGER.error("[N_ASYNC] Could not get info from {}: 401".format(self.API_URL))
                 return None
+
             _LOGGER.debug("[N_ASYNC] custom_components.russiancrimesinua: got response from upstream: {}".format(response.json()))
             session.close()
             return response.json()
@@ -50,12 +51,9 @@ class Communications(object):
             _LOGGER.error("[N_ASYNC] Could not get info from {}: {}".format(self.API_URL, error))
 
     async def async_request(self) -> any:
-        if self.response is None :
-            self.response = await self._async_request()
+        self.response = await self._async_request()
         return self.response
 
-    def sync_request(self) -> any:
-        if self.response is None:
-            self.response = self._request()
+    def request(self) -> any:
+        self.response = self._request()
         return self.response
-
