@@ -5,7 +5,7 @@
     "issue_tracker": "https://github.com/ALX-TH/ha_russiancrimesinua/issues",
     "dependencies": [],
     "codeowners": [
-        "@alx_th"
+        "@ALX-TH"
     ],
     "requirements": [],
     "iot_class": "cloud_polling",
