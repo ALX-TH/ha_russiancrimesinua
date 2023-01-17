@@ -1,4 +1,4 @@
-# Losses of the Russian army in a war with Ukraine  
+# [Home Assistant integration] Losses of the Russian army in a war with Ukraine  
 
 This custom [home assistant](https://www.home-assistant.io) integration provides a way to present a live view of Russian army slaughter in a war with Ukraine.  
 
