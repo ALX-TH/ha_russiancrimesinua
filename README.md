@@ -1,6 +1,6 @@
 # Losses of the Russian army in a war with Ukraine  
 
-This custom integration provides a way to present a live view of Russian army slaughter in a war.  
+This custom home assistant integration provides a way to present a live view of Russian army slaughter in a war with Ukraine.  
 
 <img src="https://raw.githubusercontent.com/ALX-TH/ha_russiancrimesinua/master/images/card.png" width=80%>
 
