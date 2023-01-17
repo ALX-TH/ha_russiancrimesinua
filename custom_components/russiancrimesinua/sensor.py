@@ -41,7 +41,7 @@ from .const import (
 )
 
 _LOGGER = logging.getLogger(__name__)
-TIME_BETWEEN_UPDATES = timedelta(minutes=60)
+SCAN_INTERVAL = timedelta(minutes=60)
 
 async def async_setup_platform(hass, config, async_add_entities, discovery_info=None):
     """Setup sensor platform."""
@@ -61,7 +61,7 @@ class SensorData():
     def get_update(self):
         return self.response
 
-    @Throttle(TIME_BETWEEN_UPDATES)
+    @Throttle(SCAN_INTERVAL)
     def update(self):
         """Get the latest data and update the states."""
         _LOGGER.info("custom_components.{} sensor starting update".format(DOMAIN))
@@ -81,7 +81,7 @@ class RussiancrimesinUaSensor(Entity):
         self.property_name = name
         _LOGGER.debug("custom_components. sensor initialization".format(DOMAIN))
 
-    @Throttle(TIME_BETWEEN_UPDATES)
+    @Throttle(SCAN_INTERVAL)
     def update(self):
         """Get the latest sensor information."""
         _LOGGER.debug("custom_components. updating sensor dataset".format(DOMAIN))
