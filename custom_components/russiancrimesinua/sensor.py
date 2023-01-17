@@ -6,34 +6,12 @@ from homeassistant.components.sensor import (
     SensorStateClass,
     SensorEntityDescription,
 )
-from homeassistant.const import (
-    ATTR_DEVICE_CLASS,
-    ATTR_ENTITY_ID,
-    ATTR_UNIT_OF_MEASUREMENT,
-    EVENT_HOMEASSISTANT_START,
-    STATE_UNAVAILABLE,
-    STATE_UNKNOWN,
-    TEMP_CELSIUS,
-)
-
-from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity import Entity
-from homeassistant.helpers.entity_platform import AddEntitiesCallback
-from homeassistant.config_entries import ConfigEntry
-from homeassistant.helpers.typing import ConfigType, DiscoveryInfoType
-from homeassistant.helpers.event import async_track_time_interval
-from homeassistant.util import Throttle, dt
+from homeassistant.util import Throttle
 
-try:
-    from homeassistant.components.binary_sensor import BinarySensorEntity
-except ImportError:
-    from homeassistant.components.binary_sensor import (
-        BinarySensorDevice as BinarySensorEntity,
-    )
 
 import logging
 import json
-import asyncio
 from datetime import timedelta
 from .api import Communications
 from .const import (
@@ -41,52 +19,55 @@ from .const import (
 )
 
 _LOGGER = logging.getLogger(__name__)
-SCAN_INTERVAL = timedelta(minutes=60)
+SCAN_INTERVAL = timedelta(seconds=600)
 
 async def async_setup_platform(hass, config, async_add_entities, discovery_info=None):
     """Setup sensor platform."""
-    _LOGGER.debug("custom_components.{}: setting up integration".format(DOMAIN))
-    sensor = SensorData()
-    async_add_entities([RussiancrimesinUaSensor(sensor, 'aircraft')], True)
-    async_add_entities([RussiancrimesinUaSensor(sensor, 'artillery')], True)
-    async_add_entities([RussiancrimesinUaSensor(sensor, 'helicopters')], True)
-    async_add_entities([RussiancrimesinUaSensor(sensor, 'killed')], True)
-    async_add_entities([RussiancrimesinUaSensor(sensor, 'shipsBoats')], True)
-    async_add_entities([RussiancrimesinUaSensor(sensor, 'tanks')], True)
+    _LOGGER.debug("custom_components.{}: async_setup_platform".format(DOMAIN))
+    async_add_entities([RussiancrimesinUaSensor(hass, 'aircraft')], update_before_add=True)
+    async_add_entities([RussiancrimesinUaSensor(hass, 'artillery')], update_before_add=True)
+    async_add_entities([RussiancrimesinUaSensor(hass, 'helicopters')], update_before_add=True)
+    async_add_entities([RussiancrimesinUaSensor(hass, 'killed')], update_before_add=True)
+    async_add_entities([RussiancrimesinUaSensor(hass, 'shipsBoats')], update_before_add=True)
+    async_add_entities([RussiancrimesinUaSensor(hass, 'tanks')], update_before_add=True)
 
-class SensorData():
-    def __init__(self) -> None:
-        self.response = None
+async def async_setup_entry(hass, config_entry, async_add_entities):
+    """Setup sensor entry."""
+    _LOGGER.debug("custom_components.{}: async_setup_entry".format(DOMAIN))
+    hass.data.setdefault(DOMAIN, {})
+    entry_id = config_entry.entry_id
+    unique_id = config_entry.unique_id
 
-    def get_update(self):
-        return self.response
+    _LOGGER.debug('custom_components.%s: setup config entry: %s', DOMAIN, {
+        'entry_id': entry_id,
+        'unique_id': unique_id
+    })
 
-    @Throttle(SCAN_INTERVAL)
-    def update(self):
-        """Get the latest data and update the states."""
-        _LOGGER.info("custom_components.{} sensor starting update".format(DOMAIN))
-        clk = Communications()
-        if self.response is None:
-            self.response = clk.sync_request()
-            _LOGGER.info("custom_components.{} sensor update result: {}".format(DOMAIN, self.response))
+    await async_setup_platform(hass, config_entry, async_add_entities)
+    return True
 
 class RussiancrimesinUaSensor(Entity):
 
-    def __init__(self, client: SensorData, name: str):
+    def __init__(self, hass, name) -> None:
         """Initialize the data object."""
-        self.client = client
-        self._name = "{}_{}".format(DOMAIN, name)
-        self._state = None
-        self.response = None
-        self.property_name = name
-        _LOGGER.debug("custom_components. sensor initialization".format(DOMAIN))
+        self.hass = hass
 
-    @Throttle(SCAN_INTERVAL)
-    def update(self):
+        self._name = "{}_{}".format(DOMAIN, name.lower())
+        self._state = None
+        self._unique_id = "{}_{}".format(DOMAIN, name.lower())
+
+        self.property_name = name
+        _LOGGER.debug("{} sensor initialization".format(self._name))
+
+    async def async_update(self) -> None:
         """Get the latest sensor information."""
-        _LOGGER.debug("custom_components. updating sensor dataset".format(DOMAIN))
-        self.client.update()
-        self.response = self.client.get_update()
+        _LOGGER.debug("{} starting updating sensor dataset".format(self._name))
+
+        clk = Communications()
+        response = await clk.async_request()
+        if response:
+            self._state = response[self.property_name]
+            _LOGGER.debug("server responded with: {}".format(response))
 
     @property
     def name(self) -> str:
@@ -94,14 +75,31 @@ class RussiancrimesinUaSensor(Entity):
         return self._name
 
     @property
-    def unique_id(self) -> str:
-        """Return the unique id of the sensor."""
-        _LOGGER.debug("custom_components.{} unique id: {}".format(DOMAIN, self._name))
-        return self._name
+    def state(self) -> int:
+        """Return the state of the sensor."""
+        return self._state
 
     @property
-    def state(self):
-        """Return the state of the sensor."""
-        self._state = self.response[self.property_name]
-        _LOGGER.debug("custom_components.{} state: {}".format(DOMAIN, self._state))
-        return self._state
+    def unique_id(self) -> str | None:
+        """Return a unique ID."""
+        return self._unique_id
+
+    @property
+    def icon(self):
+        """Return a ICON."""
+
+        if self.property_name == 'aircraft':
+            return 'mdi:airplane'
+        elif self.property_name == 'artillery':
+            return 'mdi:train-car-flatbed-tank'
+        elif self.property_name == 'helicopters':
+            return 'mdi:helicopter'
+        elif self.property_name == 'killed':
+            return 'mdi:account'
+        elif self.property_name == 'shipsBoats':
+            return 'mdi:ferry'
+        elif self.property_name == 'tanks':
+            return 'mdi:tank'
+
+        else:
+            return 'mdi:code-not-equal'
