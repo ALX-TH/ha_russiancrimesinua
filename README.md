@@ -2,7 +2,7 @@
 
 This custom integration provides a way to present a live view of Russian army slaughter in a war.  
 
-<img src="https://raw.githubusercontent.com/ALX-TH/ha_russiancrimesinua/master/images/card.png" width=80%>  <img src="https://raw.githubusercontent.com/ALX-TH/ha_russiancrimesinua/master/images/card.png" width=80%>
+<img src="https://raw.githubusercontent.com/ALX-TH/ha_russiancrimesinua/master/images/card.png" width=80%>
 
 ## Installation  
 
