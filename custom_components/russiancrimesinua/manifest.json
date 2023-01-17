@@ -1,0 +1,13 @@
+{
+    "domain": "russiancrimesinua",
+    "name": "Sensors data from russiancrimes.in.ua",
+    "documentation": "https://github.com/ALX-TH/ha_russiancrimesinua/",
+    "issue_tracker": "https://github.com/ALX-TH/ha_russiancrimesinua/issues",
+    "dependencies": [],
+    "codeowners": [
+        "@alx_th"
+    ],
+    "requirements": [],
+    "iot_class": "cloud_polling",
+    "version": "0.1.0"
+  }
