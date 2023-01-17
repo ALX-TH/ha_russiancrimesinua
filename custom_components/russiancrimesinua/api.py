@@ -59,15 +59,3 @@ class Communications(object):
             self.response = self._request()
         return self.response
 
-#if __name__ == "__main__":
-#    logging.basicConfig(level=logging.DEBUG)
-#    async def loop():
-#        clk = Communications()
-#        response = await clk.async_request()
-#        print(response)
-#    asyncio.run(loop())
-
-#if __name__ == "__main__":
-#    clk = Communications()
-#    response = clk.sync_request()
-#    print(response['aircraft'])
