@@ -70,4 +70,27 @@ cards:
             - entity: sensor.russiancrimesinua_killed
             - entity: sensor.russiancrimesinua_shipsboats
             - entity: sensor.russiancrimesinua_tanks
+```  
+
+### Automatization  
+
+```yaml
+- id: telegram_command_russia_slaughter
+  alias: Telegram - Get Russian slaughter in a war with Ukraine
+  trigger:
+    platform: event
+    event_type: telegram_command
+    event_data:
+      command: '/russiaslaughter'
+  action:
+    service: notify.telegram_bot
+    data_template:
+      message: |
+       🙎‍♂️ Особовий склад: {{ states('sensor.russiancrimesinua_killed') | int(default = 0) }}.
+       🚀 Артилерія: {{ states('sensor.russiancrimesinua_artillery') | int(default = 0) }}.
+       🛩️ Літаки: {{ states('sensor.russiancrimesinua_aircraft') | int(default = 0) }}.
+       🚁 Гелікоптери: {{ states('sensor.russiancrimesinua_helicopters') | int(default = 0) }}.
+       🛞 Танки: {{ states('sensor.russiancrimesinua_tanks') | int(default = 0) }}.
+       🛳️ Кораблі та катери: {{ states('sensor.russiancrimesinua_shipsboats') | int(default = 0) }}.
+      title: "🔥 Орієнтовні втрати росії у війні з Україною"
 ```
