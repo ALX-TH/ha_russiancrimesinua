@@ -3,7 +3,7 @@
 DOMAIN = "russiancrimesinua"
 DOMAIN_DATA = f"{DOMAIN}_data"
 INTEGRATION_VERSION = "main"
-PLATFORMS = ["binary_sensor"]
+PLATFORMS = ["sensor"]
 REQUIRED_FILES = [
     ".translations/en.json",
     ".translations/ua.json",
