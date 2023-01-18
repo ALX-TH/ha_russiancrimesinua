@@ -2,6 +2,8 @@
 
 This custom [home assistant](https://www.home-assistant.io) integration provides a way to present a live view of Russian army slaughter in a war with Ukraine.  
 
+![UI Lovelace](https://raw.githubusercontent.com/ALX-TH/ha_russiancrimesinua/master/images/card.png)
+
 <img src="https://raw.githubusercontent.com/ALX-TH/ha_russiancrimesinua/master/images/card.png" width=80%>
 
 ## Installation  
