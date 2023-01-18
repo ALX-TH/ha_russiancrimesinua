@@ -1,8 +1,8 @@
 # [Home Assistant integration] Losses of the Russian army in a war with Ukraine  
 
-This custom [home assistant](https://www.home-assistant.io) integration provides a way to present a live view of Russian army slaughter in a war with Ukraine.  
-
 ![UI Lovelace](https://raw.githubusercontent.com/ALX-TH/ha_russiancrimesinua/master/images/card.png)  
+
+This custom [home assistant](https://www.home-assistant.io) integration provides a way to present a live view of Russian army slaughter in a war with Ukraine.  
 
 ## Installation  
 
@@ -92,5 +92,5 @@ cards:
        🚁 Гелікоптери: {{ states('sensor.russiancrimesinua_helicopters') | int(default = 0) }}.
        🛞 Танки: {{ states('sensor.russiancrimesinua_tanks') | int(default = 0) }}.
        🛳️ Кораблі та катери: {{ states('sensor.russiancrimesinua_shipsboats') | int(default = 0) }}.
-      title: "🔥 Орієнтовні втрати росії у війні з Україною"
+      title: "Орієнтовні втрати росії у війні з Україною"
 ```
