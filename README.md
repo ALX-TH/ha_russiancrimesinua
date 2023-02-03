@@ -41,6 +41,9 @@ sensor:
     sensor.russiancrimesinua_tanks:
       friendly_name: Танки
       icon: mdi:tank
+    sensor.russiancrimesinua_date:
+      friendly_name: Оновлено
+      icon: mdi:clock-check-outline
 ```  
 
 ### UI Lovelace  
@@ -70,6 +73,7 @@ cards:
             - entity: sensor.russiancrimesinua_killed
             - entity: sensor.russiancrimesinua_shipsboats
             - entity: sensor.russiancrimesinua_tanks
+            - entity: sensor.russiancrimesinua_date
 ```  
 
 ### Automatization  
