@@ -101,6 +101,8 @@ class RussiancrimesinUaSensor(Entity):
             return 'mdi:ferry'
         elif self.property_name == 'tanks':
             return 'mdi:tank'
+        elif self.property_name == 'date':
+            return 'mdi:clock-check'
 
         else:
             return 'mdi:code-not-equal'
