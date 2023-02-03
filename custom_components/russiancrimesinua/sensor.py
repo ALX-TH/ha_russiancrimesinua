@@ -30,6 +30,7 @@ async def async_setup_platform(hass, config, async_add_entities, discovery_info=
     async_add_entities([RussiancrimesinUaSensor(hass, 'killed')], update_before_add=True)
     async_add_entities([RussiancrimesinUaSensor(hass, 'shipsBoats')], update_before_add=True)
     async_add_entities([RussiancrimesinUaSensor(hass, 'tanks')], update_before_add=True)
+    async_add_entities([RussiancrimesinUaSensor(hass, 'date')], update_before_add=True)
 
 async def async_setup_entry(hass, config_entry, async_add_entities):
     """Setup sensor entry."""
