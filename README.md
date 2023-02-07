@@ -45,7 +45,7 @@ sensor:
       friendly_name: Бойові броньовані машини
       icon: mdi:car-estate
     sensor.russiancrimesinua_updater:
-      friendly_name: Оновлено
+      friendly_name: Оновлення
       icon: mdi:clock-check-outline
 ```  
 
