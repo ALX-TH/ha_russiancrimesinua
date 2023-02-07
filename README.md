@@ -75,6 +75,7 @@ cards:
             - entity: sensor.russiancrimesinua_helicopters
             - entity: sensor.russiancrimesinua_killed
             - entity: sensor.russiancrimesinua_ships
+            - entity: sensor.russiancrimesinua_tanks
             - entity: sensor.russiancrimesinua_vehicles
             - entity: sensor.russiancrimesinua_updater
 ```  
