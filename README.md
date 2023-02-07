@@ -35,13 +35,16 @@ sensor:
     sensor.russiancrimesinua_killed:
       friendly_name: Особовий склад
       icon: mdi:face-man
-    sensor.russiancrimesinua_shipsboats:
+    sensor.russiancrimesinua_ships:
       friendly_name: Кораблі та катери
       icon: mdi:ferry
     sensor.russiancrimesinua_tanks:
       friendly_name: Танки
       icon: mdi:tank
-    sensor.russiancrimesinua_date:
+    sensor.russiancrimesinua_vehicles:
+      friendly_name: Бойові броньовані машини
+      icon: mdi:car-estate
+    sensor.russiancrimesinua_updater:
       friendly_name: Оновлено
       icon: mdi:clock-check-outline
 ```  
@@ -71,9 +74,9 @@ cards:
             - entity: sensor.russiancrimesinua_artillery
             - entity: sensor.russiancrimesinua_helicopters
             - entity: sensor.russiancrimesinua_killed
-            - entity: sensor.russiancrimesinua_shipsboats
-            - entity: sensor.russiancrimesinua_tanks
-            - entity: sensor.russiancrimesinua_date
+            - entity: sensor.russiancrimesinua_ships
+            - entity: sensor.russiancrimesinua_vehicles
+            - entity: sensor.russiancrimesinua_updater
 ```  
 
 ### Automatization  
@@ -95,6 +98,7 @@ cards:
        🛩️ Літаки: {{ states('sensor.russiancrimesinua_aircraft') | int(default = 0) }}.
        🚁 Гелікоптери: {{ states('sensor.russiancrimesinua_helicopters') | int(default = 0) }}.
        🛞 Танки: {{ states('sensor.russiancrimesinua_tanks') | int(default = 0) }}.
-       🛳️ Кораблі та катери: {{ states('sensor.russiancrimesinua_shipsboats') | int(default = 0) }}.
+       🛳️ Кораблі та катери: {{ states('sensor.russiancrimesinua_ships') | int(default = 0) }}.
+       🚘 Бойові броньовані машини: {{ states('sensor.russiancrimesinua_vehicles') | int(default = 0) }}.
       title: "Орієнтовні втрати росії у війні з Україною"
 ```
